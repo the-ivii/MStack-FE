@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Box, Button, Dialog, DialogActions, DialogContent, DialogTitle,
   Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  TextField, Typography, InputAdornment
+  TextField, Typography, InputAdornment, TablePagination
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
@@ -20,14 +20,19 @@ const TenantPage = () => {
   });
   const [deleteDialog, setDeleteDialog] = useState({ open: false, tenant: null });
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(0); // 0-based for MUI
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     fetchTenants();
-  }, []);
+    // eslint-disable-next-line
+  }, [page, rowsPerPage]);
 
   const fetchTenants = async () => {
-    const res = await api.get('/');
+    const res = await api.get(`/?page=${page + 1}&limit=${rowsPerPage}`);
     setTenants(res.data.data);
+    setTotal(res.data.total);
   };
 
   const handleOpen = (tenant = null) => {
@@ -135,6 +140,18 @@ const TenantPage = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        component="div"
+        count={total}
+        page={page}
+        onPageChange={(e, newPage) => setPage(newPage)}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={e => {
+          setRowsPerPage(parseInt(e.target.value, 10));
+          setPage(0);
+        }}
+        rowsPerPageOptions={[5, 10, 25, 50]}
+      />
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{editingTenant ? 'Edit Tenant' : 'Add Tenant'}</DialogTitle>

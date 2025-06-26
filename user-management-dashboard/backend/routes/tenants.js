@@ -16,7 +16,21 @@ let tenants = [
 
 // List tenants
 router.get('/', (req, res) => {
-  res.json({ success: true, data: tenants });
+  let { page = 1, limit = 10 } = req.query;
+  page = parseInt(page);
+  limit = parseInt(limit);
+
+  const start = (page - 1) * limit;
+  const end = start + limit;
+  const paginatedTenants = tenants.slice(start, end);
+
+  res.json({
+    success: true,
+    data: paginatedTenants,
+    total: tenants.length,
+    page,
+    limit
+  });
 });
 
 // Create tenant
