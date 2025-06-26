@@ -51,6 +51,9 @@ app.use('/api/v1/roles', roleRouter);
 const privilegeRouter = require('./routes/privileges');
 app.use('/api/v1/privileges', privilegeRouter);
 
+const legalEntityRouter = require('./routes/legalEntities');
+app.use('/api/v1/legal-entities', legalEntityRouter);
+
 // Fallback for undefined routes
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });

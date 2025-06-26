@@ -7,6 +7,7 @@ import OrganizationPage from './pages/OrganizationPage';
 import UserPage from './pages/UserPage';
 import RolePage from './pages/RolePage';
 import PrivilegePage from './pages/PrivilegePage';
+import LegalEntityPage from './pages/LegalEntityPage';
 import { Box, Typography, Button, Stack } from '@mui/material';
 
 const PrivateRoute = ({ children }) => {
@@ -27,6 +28,7 @@ const DashboardLayout = ({ children }) => {
         <Button variant="outlined" onClick={() => navigate('/organizations')}>Organizations</Button>
         <Button variant="outlined" onClick={() => navigate('/roles')}>Roles</Button>
         <Button variant="outlined" onClick={() => navigate('/privileges')}>Privileges</Button>
+        <Button variant="outlined" onClick={() => navigate('/legal-entities')}>Legal Entities</Button>
       </Stack>
       {children}
     </Box>
@@ -94,6 +96,16 @@ function App() {
             <PrivateRoute>
               <DashboardLayout>
                 <PrivilegePage />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/legal-entities"
+          element={
+            <PrivateRoute>
+              <DashboardLayout>
+                <LegalEntityPage />
               </DashboardLayout>
             </PrivateRoute>
           }
