@@ -1,22 +1,30 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import UserList from './components/UserList';
-import { Box, Typography } from '@mui/material';
+import TenantPage from './pages/TenantPage';
+import { Box, Typography, Button, Stack } from '@mui/material';
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('token');
   return token ? children : <Navigate to="/" />;
 };
 
-const DashboardLayout = ({ children }) => (
-  <Box sx={{ p: 3 }}>
-    <Typography variant="h4" gutterBottom>
-      User Management Dashboard
-    </Typography>
-    {children}
-  </Box>
-);
+const DashboardLayout = ({ children }) => {
+  const navigate = useNavigate();
+  return (
+    <Box sx={{ p: 3 }}>
+      <Stack direction="row" spacing={2} alignItems="center" mb={2}>
+        <Typography variant="h4" sx={{ flexGrow: 1 }} gutterBottom>
+          User Management Dashboard
+        </Typography>
+        <Button variant="outlined" onClick={() => navigate('/dashboard')}>Users</Button>
+        <Button variant="outlined" onClick={() => navigate('/tenants')}>Tenants</Button>
+      </Stack>
+      {children}
+    </Box>
+  );
+};
 
 function App() {
   return (
@@ -29,6 +37,16 @@ function App() {
             <PrivateRoute>
               <DashboardLayout>
                 <UserList />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tenants"
+          element={
+            <PrivateRoute>
+              <DashboardLayout>
+                <TenantPage />
               </DashboardLayout>
             </PrivateRoute>
           }

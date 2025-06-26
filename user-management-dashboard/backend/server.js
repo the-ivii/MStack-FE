@@ -35,6 +35,9 @@ app.use(express.json());
 const authRouter = require('./routes/auth');
 app.use('/api/v1/auth', authRouter);
 
+const tenantRouter = require('./routes/tenants');
+app.use('/api/v1/tenants', tenantRouter);
+
 // Fallback for undefined routes
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
