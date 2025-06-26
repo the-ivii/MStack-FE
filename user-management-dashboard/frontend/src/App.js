@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/DashboardPage';
 import UserList from './components/UserList';
 import TenantPage from './pages/TenantPage';
 import OrganizationPage from './pages/OrganizationPage';
@@ -23,6 +24,7 @@ const DashboardLayout = ({ children }) => {
         <Typography variant="h4" sx={{ flexGrow: 1 }} gutterBottom>
           User Management Dashboard
         </Typography>
+        <Button variant="outlined" onClick={() => navigate('/dashboard')}>Dashboard</Button>
         <Button variant="outlined" onClick={() => navigate('/users')}>Users</Button>
         <Button variant="outlined" onClick={() => navigate('/tenants')}>Tenants</Button>
         <Button variant="outlined" onClick={() => navigate('/organizations')}>Organizations</Button>
@@ -40,76 +42,55 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <DashboardLayout>
-                <UserList />
-              </DashboardLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/tenants"
-          element={
-            <PrivateRoute>
-              <DashboardLayout>
-                <TenantPage />
-              </DashboardLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/organizations"
-          element={
-            <PrivateRoute>
-              <DashboardLayout>
-                <OrganizationPage />
-              </DashboardLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/users"
-          element={
-            <PrivateRoute>
-              <DashboardLayout>
-                <UserPage />
-              </DashboardLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/roles"
-          element={
-            <PrivateRoute>
-              <DashboardLayout>
-                <RolePage />
-              </DashboardLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/privileges"
-          element={
-            <PrivateRoute>
-              <DashboardLayout>
-                <PrivilegePage />
-              </DashboardLayout>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/legal-entities"
-          element={
-            <PrivateRoute>
-              <DashboardLayout>
-                <LegalEntityPage />
-              </DashboardLayout>
-            </PrivateRoute>
-          }
-        />
+        <Route path="/dashboard" element={
+          <PrivateRoute>
+            <DashboardLayout>
+              <DashboardPage />
+            </DashboardLayout>
+          </PrivateRoute>
+        } />
+        <Route path="/users" element={
+          <PrivateRoute>
+            <DashboardLayout>
+              <UserPage />
+            </DashboardLayout>
+          </PrivateRoute>
+        } />
+        <Route path="/tenants" element={
+          <PrivateRoute>
+            <DashboardLayout>
+              <TenantPage />
+            </DashboardLayout>
+          </PrivateRoute>
+        } />
+        <Route path="/organizations" element={
+          <PrivateRoute>
+            <DashboardLayout>
+              <OrganizationPage />
+            </DashboardLayout>
+          </PrivateRoute>
+        } />
+        <Route path="/roles" element={
+          <PrivateRoute>
+            <DashboardLayout>
+              <RolePage />
+            </DashboardLayout>
+          </PrivateRoute>
+        } />
+        <Route path="/privileges" element={
+          <PrivateRoute>
+            <DashboardLayout>
+              <PrivilegePage />
+            </DashboardLayout>
+          </PrivateRoute>
+        } />
+        <Route path="/legal-entities" element={
+          <PrivateRoute>
+            <DashboardLayout>
+              <LegalEntityPage />
+            </DashboardLayout>
+          </PrivateRoute>
+        } />
       </Routes>
     </Router>
   );
