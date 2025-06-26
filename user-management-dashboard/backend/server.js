@@ -45,6 +45,12 @@ app.use('/api/v1/organizations', organizationRouter);
 const userRouter = require('./routes/users');
 app.use('/api/v1/users', userRouter);
 
+const roleRouter = require('./routes/roles');
+app.use('/api/v1/roles', roleRouter);
+
+const privilegeRouter = require('./routes/privileges');
+app.use('/api/v1/privileges', privilegeRouter);
+
 // Fallback for undefined routes
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
