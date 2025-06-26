@@ -1,27 +1,27 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-// CORS config – for dev only
+// More robust CORS config
+const allowedOrigins = ['http://localhost:3000', 'http://192.168.245.19:3000'];
 const corsOptions = {
-  origin: '*', // for dev only; change to 'http://localhost:3000' in production
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type'],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 };
 
 app.use(cors(corsOptions));
-
-// Extra CORS headers (double insurance)
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  next();
-});
+app.options('*', cors(corsOptions)); // Enable pre-flight for all routes
 
 // Request logger
 app.use((req, res, next) => {
@@ -31,22 +31,9 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-// MongoDB connection
-const uri = process.env.MONGO_URI;
-
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('✅ MongoDB connected'))
-.catch(err => {
-  console.error('❌ MongoDB connection failed:', err.message);
-  process.exit(1);
-});
-
-// Routes
-const usersRouter = require('./routes/users');
-app.use('/users', usersRouter);
+// API Routes
+const authRouter = require('./routes/auth');
+app.use('/api/v1/auth', authRouter);
 
 // Fallback for undefined routes
 app.use((req, res) => {
