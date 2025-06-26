@@ -189,7 +189,7 @@ const DashboardPage = () => {
             title="Total Users"
             value={stats.users.total}
             icon={<PeopleIcon />}
-            color="#1976d2"
+            color="#6B46C1"
             subtitle={`${stats.users.active} active, ${stats.users.inactive} inactive`}
           />
         </Grid>
@@ -198,7 +198,7 @@ const DashboardPage = () => {
             title="Tenants"
             value={stats.tenants.total}
             icon={<DomainIcon />}
-            color="#2e7d32"
+            color="#38A169"
             subtitle={`${stats.tenants.active} active, ${stats.tenants.inactive} inactive`}
           />
         </Grid>
@@ -207,7 +207,7 @@ const DashboardPage = () => {
             title="Organizations"
             value={stats.organizations.total}
             icon={<BusinessIcon />}
-            color="#ed6c02"
+            color="#ED8936"
             subtitle={`${stats.organizations.active} active, ${stats.organizations.inactive} inactive`}
           />
         </Grid>
@@ -216,7 +216,7 @@ const DashboardPage = () => {
             title="Roles & Privileges"
             value={`${stats.roles} / ${stats.privileges}`}
             icon={<SecurityIcon />}
-            color="#9c27b0"
+            color="#805AD5"
             subtitle="Roles / Privileges"
           />
         </Grid>
