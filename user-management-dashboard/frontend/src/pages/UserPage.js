@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
+import { useHasPrivilege } from '../hooks/useRBAC';
 
 const api = axios.create({
   baseURL: 'http://localhost:5000/api/v1/users',
@@ -25,6 +26,7 @@ const UserPage = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [deleteDialog, setDeleteDialog] = useState({ open: false, user: null });
   const [search, setSearch] = useState('');
+  const canCreateUser = useHasPrivilege('create_user');
 
   useEffect(() => {
     fetchUsers();
@@ -144,7 +146,9 @@ const UserPage = () => {
             ),
           }}
         />
-        <Button variant="contained" onClick={() => handleOpen()}>Add User</Button>
+        {canCreateUser && (
+          <Button variant="contained" onClick={() => handleOpen()}>Add User</Button>
+        )}
       </Box>
       <TableContainer component={Paper}>
         <Table>

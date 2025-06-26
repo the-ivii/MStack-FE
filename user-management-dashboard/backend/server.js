@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const mongoose = require('mongoose');
+const authenticateJWT = require('./middleware/auth');
+const { requireRole } = require('./middleware/rbac');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -43,7 +45,7 @@ const organizationRouter = require('./routes/organizations');
 app.use('/api/v1/organizations', organizationRouter);
 
 const userRouter = require('./routes/users');
-app.use('/api/v1/users', userRouter);
+app.use('/api/v1/users', authenticateJWT, requireRole('Admin'), userRouter);
 
 const roleRouter = require('./routes/roles');
 app.use('/api/v1/roles', roleRouter);
