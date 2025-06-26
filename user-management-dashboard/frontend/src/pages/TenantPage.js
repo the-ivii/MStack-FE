@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import {
   Box, Button, Dialog, DialogActions, DialogContent, DialogTitle,
   Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  TextField, Typography
+  TextField, Typography, InputAdornment
 } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
 
 const api = axios.create({
@@ -18,6 +19,7 @@ const TenantPage = () => {
     name: '', description: '', email: '', phone: '', website: '', active: true,
   });
   const [deleteDialog, setDeleteDialog] = useState({ open: false, tenant: null });
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     fetchTenants();
@@ -74,10 +76,34 @@ const TenantPage = () => {
     setDeleteDialog({ open: false, tenant: null });
   };
 
+  // Filter tenants by search
+  const filteredTenants = tenants.filter(t =>
+    t.name.toLowerCase().includes(search.toLowerCase()) ||
+    t.description.toLowerCase().includes(search.toLowerCase()) ||
+    t.email.toLowerCase().includes(search.toLowerCase()) ||
+    t.phone.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>Tenant Management</Typography>
-      <Button variant="contained" onClick={() => handleOpen()} sx={{ mb: 2 }}>Add Tenant</Button>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+        <TextField
+          placeholder="Search tenants..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          size="small"
+          sx={{ mr: 2, width: 300 }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <Button variant="contained" onClick={() => handleOpen()}>Add Tenant</Button>
+      </Box>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -92,7 +118,7 @@ const TenantPage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {tenants.map((tenant) => (
+            {filteredTenants.map((tenant) => (
               <TableRow key={tenant.id}>
                 <TableCell>{tenant.name}</TableCell>
                 <TableCell>{tenant.description}</TableCell>
