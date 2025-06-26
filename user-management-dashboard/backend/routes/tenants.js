@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
 // Create tenant
 router.post('/', (req, res) => {
   const newTenant = {
-    id: Date.now().toString(),
+    id: Math.random().toString(36).substr(2, 9),
     ...req.body,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
@@ -48,6 +48,14 @@ router.put('/:id', (req, res) => {
     updated_at: new Date().toISOString()
   };
   res.json({ success: true, data: tenants[idx] });
+});
+
+// Delete tenant
+router.delete('/:id', (req, res) => {
+  const idx = tenants.findIndex(t => t.id === req.params.id);
+  if (idx === -1) return res.status(404).json({ success: false, message: 'Not found' });
+  const deleted = tenants.splice(idx, 1);
+  res.json({ success: true, data: deleted[0] });
 });
 
 module.exports = router;

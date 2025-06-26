@@ -17,6 +17,7 @@ const TenantPage = () => {
   const [form, setForm] = useState({
     name: '', description: '', email: '', phone: '', website: '', active: true,
   });
+  const [deleteDialog, setDeleteDialog] = useState({ open: false, tenant: null });
 
   useEffect(() => {
     fetchTenants();
@@ -57,6 +58,22 @@ const TenantPage = () => {
     handleClose();
   };
 
+  const handleDeleteClick = (tenant) => {
+    setDeleteDialog({ open: true, tenant });
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (deleteDialog.tenant) {
+      await api.delete(`/${deleteDialog.tenant.id}`);
+      fetchTenants();
+    }
+    setDeleteDialog({ open: false, tenant: null });
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialog({ open: false, tenant: null });
+  };
+
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>Tenant Management</Typography>
@@ -85,6 +102,7 @@ const TenantPage = () => {
                 <TableCell>{tenant.active ? 'Yes' : 'No'}</TableCell>
                 <TableCell>
                   <Button size="small" onClick={() => handleOpen(tenant)}>Edit</Button>
+                  <Button size="small" color="error" onClick={() => handleDeleteClick(tenant)} sx={{ ml: 1 }}>Delete</Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -123,6 +141,17 @@ const TenantPage = () => {
           <Button onClick={handleSubmit} variant="contained">
             {editingTenant ? 'Update' : 'Create'}
           </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={deleteDialog.open} onClose={handleDeleteCancel}>
+        <DialogTitle>Delete Tenant</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete tenant "{deleteDialog.tenant?.name}"?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel}>Cancel</Button>
+          <Button onClick={handleDeleteConfirm} color="error" variant="contained">Delete</Button>
         </DialogActions>
       </Dialog>
     </Box>
