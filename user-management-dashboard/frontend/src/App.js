@@ -5,6 +5,8 @@ import UserList from './components/UserList';
 import TenantPage from './pages/TenantPage';
 import OrganizationPage from './pages/OrganizationPage';
 import UserPage from './pages/UserPage';
+import RolePage from './pages/RolePage';
+import PrivilegePage from './pages/PrivilegePage';
 import { Box, Typography, Button, Stack } from '@mui/material';
 
 const PrivateRoute = ({ children }) => {
@@ -23,6 +25,8 @@ const DashboardLayout = ({ children }) => {
         <Button variant="outlined" onClick={() => navigate('/users')}>Users</Button>
         <Button variant="outlined" onClick={() => navigate('/tenants')}>Tenants</Button>
         <Button variant="outlined" onClick={() => navigate('/organizations')}>Organizations</Button>
+        <Button variant="outlined" onClick={() => navigate('/roles')}>Roles</Button>
+        <Button variant="outlined" onClick={() => navigate('/privileges')}>Privileges</Button>
       </Stack>
       {children}
     </Box>
@@ -70,6 +74,26 @@ function App() {
             <PrivateRoute>
               <DashboardLayout>
                 <UserPage />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/roles"
+          element={
+            <PrivateRoute>
+              <DashboardLayout>
+                <RolePage />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/privileges"
+          element={
+            <PrivateRoute>
+              <DashboardLayout>
+                <PrivilegePage />
               </DashboardLayout>
             </PrivateRoute>
           }
