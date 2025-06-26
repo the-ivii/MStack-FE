@@ -20,10 +20,9 @@ const DashboardLayout = ({ children }) => {
         <Typography variant="h4" sx={{ flexGrow: 1 }} gutterBottom>
           User Management Dashboard
         </Typography>
-        <Button variant="outlined" onClick={() => navigate('/dashboard')}>Users</Button>
+        <Button variant="outlined" onClick={() => navigate('/users')}>Users</Button>
         <Button variant="outlined" onClick={() => navigate('/tenants')}>Tenants</Button>
         <Button variant="outlined" onClick={() => navigate('/organizations')}>Organizations</Button>
-        <Button variant="outlined" onClick={() => navigate('/users')}>User Management</Button>
       </Stack>
       {children}
     </Box>
