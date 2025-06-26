@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage';
 import UserList from './components/UserList';
 import TenantPage from './pages/TenantPage';
 import OrganizationPage from './pages/OrganizationPage';
+import UserPage from './pages/UserPage';
 import { Box, Typography, Button, Stack } from '@mui/material';
 
 const PrivateRoute = ({ children }) => {
@@ -22,6 +23,7 @@ const DashboardLayout = ({ children }) => {
         <Button variant="outlined" onClick={() => navigate('/dashboard')}>Users</Button>
         <Button variant="outlined" onClick={() => navigate('/tenants')}>Tenants</Button>
         <Button variant="outlined" onClick={() => navigate('/organizations')}>Organizations</Button>
+        <Button variant="outlined" onClick={() => navigate('/users')}>User Management</Button>
       </Stack>
       {children}
     </Box>
@@ -59,6 +61,16 @@ function App() {
             <PrivateRoute>
               <DashboardLayout>
                 <OrganizationPage />
+              </DashboardLayout>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <PrivateRoute>
+              <DashboardLayout>
+                <UserPage />
               </DashboardLayout>
             </PrivateRoute>
           }

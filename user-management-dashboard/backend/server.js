@@ -42,6 +42,9 @@ app.use('/api/v1/tenants', tenantRouter);
 const organizationRouter = require('./routes/organizations');
 app.use('/api/v1/organizations', organizationRouter);
 
+const userRouter = require('./routes/users');
+app.use('/api/v1/users', userRouter);
+
 // Fallback for undefined routes
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
