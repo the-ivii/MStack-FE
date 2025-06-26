@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const mongoose = require('mongoose');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -38,10 +39,15 @@ app.use('/api/v1/auth', authRouter);
 const tenantRouter = require('./routes/tenants');
 app.use('/api/v1/tenants', tenantRouter);
 
+const organizationRouter = require('./routes/organizations');
+app.use('/api/v1/organizations', organizationRouter);
+
 // Fallback for undefined routes
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
+
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.listen(port, () => {
   console.log(`🚀 Server running on port: ${port}`);
